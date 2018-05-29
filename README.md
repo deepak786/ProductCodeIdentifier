@@ -42,22 +42,22 @@ If you know the type of code but you want to check, if the code is valid or not.
 
 **UPC**
 ```
-ProductCodeValidator.isValidUPC(190198160980L /* Long Value */)
+ProductCodeValidator.isValidUPC("190198160980");
 ```
 
 **ISBN-13**
 ```
-ProductCodeValidator.isValidISBN_13(9781940363776L /* Long Value */)
+ProductCodeValidator.isValidISBN_13("9781940363776");
 ```
 
 **EAN-8**
 ```
-ProductCodeValidator.isValidEAN(96385074L /* Long Value */)
+ProductCodeValidator.isValidEAN("96385074");
 ```
 
 **ISBN-10**
 ```
-ProductCodeValidator.isValidISBN_10(0201530821L /* Long Value */)
+ProductCodeValidator.isValidISBN_10("0201530821");
 ```
 
 # Getting Real Name

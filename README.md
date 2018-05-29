@@ -60,6 +60,9 @@ ProductCodeValidator.isValidEAN("96385074");
 ProductCodeValidator.isValidISBN_10("0201530821");
 ```
 
+**Note**
+Make sure to use the functions with **String parameter**. As there are functions avaliable with long parameter type also but when product code is starting with 0, then that functions will give you wrong results. So use the functions having String parameter type. By the way I have `depreceated` the functions having long parameter type. 
+
 # Getting Real Name
 As `ISBN_10` and `ISBN_13` both are Internation Standard Book Number (ISBN) types.
 The difference is just the digits. `ISBN_10` has 10 digits and `ISBN_13` has 13 digits.

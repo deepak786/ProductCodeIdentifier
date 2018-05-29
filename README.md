@@ -61,7 +61,8 @@ ProductCodeValidator.isValidISBN_10("0201530821");
 ```
 
 **Note**
-Make sure to use the functions with **String parameter**. As there are functions avaliable with long parameter type also but when product code is starting with 0, then that functions will give you wrong results. So use the functions having String parameter type. By the way I have `depreceated` the functions having long parameter type. 
+
+Make sure to use the functions with **String parameter**. As Functions with long parameter type also available but when product code is starting with 0, then that functions will give you wrong results. So use the functions having String parameter type. By the way I have `depreceated` the functions having long parameter type. 
 
 # Getting Real Name
 As `ISBN_10` and `ISBN_13` both are Internation Standard Book Number (ISBN) types.

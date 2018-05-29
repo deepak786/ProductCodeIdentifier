@@ -30,19 +30,16 @@ public class ProductCodeValidator {
         // check if code contains only numerics
         if (code.matches("[0-9]+")) {
             // numerics only
-            // convert the string to Long, so that we can now perform calculations
-            long codeValue = Long.parseLong(code);
             switch (code.length()) {
                 case 8: // can be EAN-8
-                    return isValidEAN(codeValue) ? ProductCodeType.EAN_8 : ProductCodeType.NONE;
+                    return isValidEAN(code) ? ProductCodeType.EAN_8 : ProductCodeType.NONE;
                 case 10: // can be ISBN-10
-                    return isValidISBN_10(codeValue) ? ProductCodeType.ISBN_10 : ProductCodeType.NONE;
+                    return isValidISBN_10(code) ? ProductCodeType.ISBN_10 : ProductCodeType.NONE;
                 case 12: // can be UPC
-                    return isValidUPC(codeValue) ? ProductCodeType.UPC : ProductCodeType.NONE;
+                    return isValidUPC(code) ? ProductCodeType.UPC : ProductCodeType.NONE;
                 case 13: // can be EAN-13 or ISBN-13 (both are same)
-                    return isValidEAN(codeValue) ? ProductCodeType.EAN_13 : ProductCodeType.NONE;
+                    return isValidEAN(code) ? ProductCodeType.EAN_13 : ProductCodeType.NONE;
             }
-
         } else {
             // alphanumeric
             switch (code.length()) {
@@ -57,10 +54,118 @@ public class ProductCodeValidator {
 
     /**
      * check if @UPC is valid or not
+     * UPC is 12 digits length
+     *
+     * @param code upc code
+     * @return true or false
+     */
+    public static boolean isValidUPC(@NonNull String code) {
+        if (!TextUtils.isEmpty(code)) {
+            code = getDigits(code);
+            if (!TextUtils.isEmpty(code)) { // ensure code has some value with digits only
+                int nDigits = code.length();
+
+                int sumEven = 0;
+                int sumOdd = 0;
+
+                int checkDigit = Integer.parseInt(code.substring(nDigits - 1));
+
+                // traverse the digits from left to right
+                for (int i = 1; i <= nDigits - 1; i++) {
+                    int digit = Integer.parseInt(code.substring(i - 1, i));
+                    if (i % 2 == 0) // even
+                        sumEven += digit;
+                    else // odd
+                        sumOdd += digit;
+                }
+                int sum = sumEven + (sumOdd * 3);
+                int calcCheckDigit = (10 - (sum % 10)) % 10;
+                return checkDigit == calcCheckDigit;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * check if @ISBN-10 is valid  or not
+     * ISBN_10 is 10 digits in length
+     *
+     * @param code ISBN code
+     * @return true or false
+     */
+    public static boolean isValidISBN_10(@NonNull String code) {
+        if (!TextUtils.isEmpty(code)) {
+            code = getDigits(code);
+            if (!TextUtils.isEmpty(code)) { // ensure code has some value with digits only
+                int nDigits = code.length();
+                int sum = 0;
+
+                // traverse the digits from left to right
+                for (int i = 1; i <= nDigits; i++) {
+                    int digit = Integer.parseInt(code.substring(i - 1, i));
+                    sum += (digit * i);
+                }
+                return sum % 11 == 0;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * check if @EAN is valid or not
+     * EAN is 13 digits in length
+     *
+     * @param code EAN code
+     * @return true or false
+     */
+    public static boolean isValidEAN(String code) {
+        if (!TextUtils.isEmpty(code)) {
+            code = getDigits(code);
+            if (!TextUtils.isEmpty(code)) { // ensure code has some value with digits only
+                int nDigits = code.length();
+
+                int sumEven = 0;
+                int sumOdd = 0;
+
+                int checkDigit = Integer.parseInt(code.substring(nDigits - 1));
+
+                // traverse the digits from left to right
+                for (int i = 1; i <= nDigits - 1; i++) {
+                    int digit = Integer.parseInt(code.substring(i - 1, i));
+                    if (i % 2 == 0) // even
+                        sumEven += digit;
+                    else // odd
+                        sumOdd += digit;
+                }
+                int sum = (sumEven * 3) + sumOdd;
+                int calcCheckDigit = (10 - (sum % 10)) % 10;
+                return checkDigit == calcCheckDigit;
+
+            }
+        }
+        return false;
+    }
+
+    /**
+     * check if @ISBN-13 is valid or not
+     * ISBN-13 is 13 digits in length
+     *
+     * @param code ISBN-13 code
+     * @return true or false
+     */
+    public static boolean isValidISBN_13(String code) {
+        return isValidEAN(code);
+    }
+
+    /**
+     * check if @UPC is valid or not
      *
      * @param codeValue upc code
      * @return true or false
+     * @deprecated use {@link #isValidUPC(String)} instead. This doesn't validates the code starting with 0.
+     * So use the new function with string parameter
      */
+    @Deprecated
     public static boolean isValidUPC(long codeValue) {
         if (codeValue > 0 && codeValue < LARGEST_POSSIBLE_UPC) {
 
@@ -95,7 +200,11 @@ public class ProductCodeValidator {
 
     /**
      * check if @ISBN-10 is valid  or not
+     *
+     * @deprecated use {@link #isValidISBN_10(String)} instead. This doesn't validates the code starting with 0.
+     * So use the new function with string parameter
      */
+    @Deprecated
     public static boolean isValidISBN_10(long codeValue) {
         if (codeValue > 0 && codeValue < LARGEST_POSSIBLE_ISBN_10) {
 
@@ -119,7 +228,10 @@ public class ProductCodeValidator {
      *
      * @param codeValue EAN code
      * @return true or false
+     * @deprecated use {@link #isValidEAN(String)} instead. This doesn't validates the code starting with 0.
+     * So use the new function with string parameter
      */
+    @Deprecated
     public static boolean isValidEAN(long codeValue) {
         if (codeValue > 0 && codeValue < LARGEST_POSSIBLE_EAN) {
 
@@ -157,7 +269,10 @@ public class ProductCodeValidator {
      *
      * @param codeValue ISBN-13 code
      * @return true or false
+     * @deprecated use {@link #isValidISBN_13(String)} instead. This doesn't validates the code starting with 0.
+     * So use the new function with string parameter
      */
+    @Deprecated
     public static boolean isValidISBN_13(long codeValue) {
         return isValidEAN(codeValue);
     }
@@ -167,5 +282,12 @@ public class ProductCodeValidator {
      */
     private static int getTotalDigits(long codeValue) {
         return (int) (Math.floor(Math.log10(Math.abs(codeValue))) + 1);
+    }
+
+    /**
+     * get the digits only from code
+     */
+    private static String getDigits(@NonNull String code) {
+        return code.replaceAll("[^0-9]", "");
     }
 }

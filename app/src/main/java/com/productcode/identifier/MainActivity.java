@@ -36,8 +36,10 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(">>>>>>" + ProductCodeValidator.getCodeType("96385074QQQQQQEE")); // NONE
 
         // check if code is valid or not
-        System.out.println(">>>>>>" + ProductCodeValidator.isValidISBN_13(9781940363776L /* Long Value */)); // ISBN-13
-        System.out.println(">>>>>>" + ProductCodeValidator.isValidUPC(190198160980L /* Long Value */)); // UPC
+        System.out.println(">>>>>>" + ProductCodeValidator.isValidISBN_10("0-201-53082-1")); /// ISBN-10
+        System.out.println(">>>>>>" + ProductCodeValidator.isValidISBN_13("9781940363776")); // ISBN-13
+        System.out.println(">>>>>>" + ProductCodeValidator.isValidUPC("049057200193")); // UPC
+        System.out.println(">>>>>>" + ProductCodeValidator.isValidEAN("96385074")); // EAN
 
         // get the real name
         System.out.println(">>>>>>" + ProductCodeType.ISBN_10.getRealName()); // ISBN
